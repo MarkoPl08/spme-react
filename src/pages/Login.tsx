@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {GoogleLogin} from '@react-oauth/google';
+import {GoogleLogin, CredentialResponse} from '@react-oauth/google';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -18,16 +18,18 @@ const Login: React.FC = () => {
         }
     };
 
-
-    const responseMessage = (response) => {
-        console.log(response);
+    const responseMessage = (credentialResponse: CredentialResponse) => {
+        console.log('OAuth success:', credentialResponse);
+        if (credentialResponse.credential) {
+            console.log('Token:', credentialResponse.credential);
+        }
     };
-    const errorMessage = (error) => {
-        console.log(error);
+
+    const errorMessage = () => {
+        console.log('OAuth error occurred');
     };
 
     const handleGitHubLogin = () => {
-        // Redirect to GitHub OAuth page using Vite environment variable
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}&scope=user`;
     };
 
