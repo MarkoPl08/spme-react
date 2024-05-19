@@ -10,14 +10,14 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
-        const response = await loginUser({email, password});
-        if (response.user) {
-            console.log('Login successful:', response.user);
-            // Redirect or manage user session here
+        const response = await loginUser({ email, password });
+        if (response.token) {
+            console.log('Login successful, token stored');
         } else {
             console.error('Login failed:', response.message);
         }
     };
+
 
     const responseMessage = (response) => {
         console.log(response);

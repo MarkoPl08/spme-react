@@ -1,4 +1,4 @@
-import {LoginCredentials, RegisterData, UserResponse} from "./types/auth.ts";
+import {LoginCredentials, RegisterData, UserResponse, VerifyTokenResponse} from "./types/auth.ts";
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -9,7 +9,13 @@ export async function loginUser(credentials: LoginCredentials): Promise<UserResp
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
-    }).then(response => response.json());
+    }).then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('jwtToken', data.token);
+            }
+            return data;
+        });
 }
 
 export async function registerUser(data: RegisterData): Promise<UserResponse> {
@@ -22,14 +28,12 @@ export async function registerUser(data: RegisterData): Promise<UserResponse> {
     }).then(response => response.json());
 }
 
-export async function loginWithGoogle(): Promise<UserResponse> {
-    return fetch(`${BASE_URL}/auth/google`, {
-        method: 'GET'
-    }).then(response => response.json());
-}
-
-export async function loginWithGitHub(): Promise<UserResponse> {
-    return fetch(`${BASE_URL}/auth/github`, {
-        method: 'GET'
+export async function verifyToken(token: string): Promise<VerifyTokenResponse> {
+    return fetch(`${BASE_URL}/verifyToken`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token })
     }).then(response => response.json());
 }
