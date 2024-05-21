@@ -3,15 +3,17 @@ export interface LoginCredentials {
     password: string;
 }
 
-interface User {
+export interface User {
     UserID: number;
-    Username: string;
-    Email: string;
+    Username?: string;
+    Email?: string;
     PasswordHash?: string;
-    RoleID: number;
-    PackageID: number;
-    CreatedAt: Date;
-    UpdatedAt: Date;
+    RoleID?: number;
+    PackageID?: number;
+    CreatedAt?: Date;
+    UpdatedAt?: Date;
+    name?: string;
+    familyName?: string;
 }
 
 export interface UserResponse {
