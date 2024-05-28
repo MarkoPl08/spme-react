@@ -4,7 +4,7 @@ import { User } from '../../types/auth.ts';
 import Button from "@mui/material/Button";
 
 interface GitHubLoginComponentProps {
-    setUser: (user: User) => void;
+    setUser: (user: User | null) => void;
     user: User | null;
 }
 
@@ -34,13 +34,14 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
 
             const data = await response.json();
             if (data.user) {
+                localStorage.setItem('jwtToken', data.token);
                 console.log('Login successful:', data.user);
                 setUser({
                     UserID: data.user.UserID,
                     name: data.user.Username,
                     Email: data.user.Email
                 });
-                navigate('/login');
+                navigate('/dashboard');
             } else {
                 console.error('Login failed:', data.message);
             }

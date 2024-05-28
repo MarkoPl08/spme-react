@@ -8,7 +8,7 @@ const MainLoginComponent: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
 
     const handleLogout = () => {
-        localStorage.removeItem('googleToken');
+        localStorage.removeItem('jwtToken');
         setUser(null);
     };
 
@@ -20,7 +20,6 @@ const MainLoginComponent: React.FC = () => {
             {user && (
                 <div>
                     <h1>Welcome, {user.name}!</h1>
-                    {user.familyName && <p>Family Name: {user.familyName}</p>}
                     <p>Email: {user.Email}</p>
                     <button onClick={handleLogout}>Logout</button>
                 </div>

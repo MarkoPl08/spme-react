@@ -3,7 +3,7 @@ import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { User } from '../../types/auth.ts';
 
 interface GoogleLoginComponentProps {
-    setUser: (user: User) => void;
+    setUser: (user: User | null) => void;
     handleLogout: () => void;
     user: User | null;
 }
@@ -19,10 +19,10 @@ const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ setUser, us
         }).then(res => res.json())
             .then(data => {
                 if (data.user) {
+                    localStorage.setItem('jwtToken', data.token);
                     setUser({
                         UserID: data.user.UserID,
                         name: data.user.Username,
-                        familyName: data.user.Email,
                         Email: data.user.Email
                     });
                 }

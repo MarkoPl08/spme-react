@@ -6,7 +6,7 @@ import { loginUser } from '../../api.ts';
 import { User } from '../../types/auth.ts';
 
 interface EmailLoginComponentProps {
-    setUser: (user: User) => void;
+    setUser: (user: User | null) => void;
     user: User | null;
 }
 
@@ -17,11 +17,11 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({ setUser, user
     const handleLogin = async () => {
         const response = await loginUser({ email, password });
         if (response.token && response.user) {
+            localStorage.setItem('jwtToken', response.token);
             console.log('Login successful, token stored');
             setUser({
                 UserID: response.user.UserID,
                 name: response.user.Username,
-                familyName: '',
                 Email: response.user.Email
             });
         } else {
