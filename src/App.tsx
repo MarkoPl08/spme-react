@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './pages/Login';
+import Login from './pages/auth/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/UserDashboard.tsx';
-import ProtectedRoute from "./routes/ProtectedRoute.tsx";
-import AuthWrapper from "./hooks/AuthWrapper.tsx";
+import Dashboard from './pages/UserDashboard';
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AuthWrapper from "./hooks/AuthWrapper";
 
 function App() {
     return (
