@@ -1,4 +1,4 @@
-import {LoginCredentials, RegisterData, UserResponse} from "./types/auth.ts";
+import {LoginCredentials, RegisterData, UserResponse, VerifyTokenResponse} from "./types/auth.ts";
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -28,20 +28,12 @@ export async function registerUser(data: RegisterData): Promise<UserResponse> {
     }).then(response => response.json());
 }
 
-export const verifyToken = async (token: string) => {
-    try {
-        const response = await fetch(`${BASE_URL}/verifyToken`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token })
-        });
-
-        const data = await response.json();
-        return { isValid: data.isValid };
-    } catch (error) {
-        console.error('Error verifying token:', error);
-        return { isValid: false };
-    }
-};
+export async function verifyToken(token: string): Promise<VerifyTokenResponse> {
+    return fetch(`${BASE_URL}/verifyToken`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token })
+    }).then(response => response.json());
+}
