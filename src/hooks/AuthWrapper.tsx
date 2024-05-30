@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyToken } from '../api';
+import { verifyToken } from '../apis/authApi.ts';
 
 interface AuthWrapperProps {
     children: React.ReactNode;
