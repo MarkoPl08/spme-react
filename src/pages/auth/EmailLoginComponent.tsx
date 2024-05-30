@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { loginUser } from '../../api';
+import { loginUser } from '../../apis/authApi.ts';
 import { User } from '../../types/auth';
 import {parseJwt} from "../../helpers/parseJwt.tsx";
 

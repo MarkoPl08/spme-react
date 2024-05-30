@@ -1,4 +1,4 @@
-import {LoginCredentials, RegisterData, UserResponse, VerifyTokenResponse} from "./types/auth.ts";
+import {LoginCredentials, RegisterData, UserResponse, VerifyTokenResponse} from "../types/auth.ts";
 
 const BASE_URL = 'http://localhost:3000';
 

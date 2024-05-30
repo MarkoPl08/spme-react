@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyToken } from '../api';
+import { verifyToken } from '../apis/authApi.ts';
 
 const useAuthCheck = () => {
     const navigate = useNavigate();

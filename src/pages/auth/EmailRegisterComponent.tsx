@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerUser } from '../../api';
+import { registerUser } from '../../apis/authApi.ts';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
