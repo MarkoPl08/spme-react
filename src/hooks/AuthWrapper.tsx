@@ -15,14 +15,14 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
             verifyToken(token).then(data => {
                 if (!data.isValid) {
                     localStorage.removeItem('jwtToken');
-                    navigate('/login');
+                    navigate('/register');
                 }
             }).catch(() => {
                 localStorage.removeItem('jwtToken');
-                navigate('/login');
+                navigate('/register');
             });
         } else {
-            navigate('/login');
+            navigate('/register');
         }
     }, [navigate, token]);
 

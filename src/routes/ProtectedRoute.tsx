@@ -9,7 +9,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const token = localStorage.getItem('jwtToken');
 
     if (!token) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/register" replace />;
     }
 
     return children;

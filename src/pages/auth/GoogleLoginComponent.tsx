@@ -1,14 +1,16 @@
 import React from 'react';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { User } from '../../types/auth.ts';
+import { User } from '../../types/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface GoogleLoginComponentProps {
     setUser: (user: User | null) => void;
-    handleLogout: () => void;
     user: User | null;
 }
 
 const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ setUser, user }) => {
+    const navigate = useNavigate();
+
     const handleSuccess = (response: CredentialResponse) => {
         fetch('http://localhost:3000/api/auth/google', {
             method: 'POST',
@@ -25,6 +27,7 @@ const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ setUser, us
                         name: data.user.Username,
                         Email: data.user.Email
                     });
+                    navigate('/dashboard');
                 }
             })
             .catch(error => {
