@@ -1,20 +1,35 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {uploadPhoto} from '../apis/photos';
-import {parseJwt} from '../helpers/parseJwt';
-import {getConsumption} from '../apis/packages';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { uploadPhoto } from '../apis/photos';
+import { parseJwt } from '../helpers/parseJwt';
+import { getConsumption } from '../apis/packages';
 
 const PhotoUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
-    const [consumption, setConsumption] = useState<{ uploadCount: number; storageUsed: number } | null>(null);
+    const [consumption, setConsumption] = useState<{ uploadCount: number, storageUsed: number, uploadLimit: number, storageLimit: number } | null>(null);
     const navigate = useNavigate();
 
     const token = localStorage.getItem('jwtToken');
     const user = token ? parseJwt(token) : null;
     const userId = user ? user.userId : null;
+
+    useEffect(() => {
+        if (userId) {
+            const fetchConsumption = async () => {
+                try {
+                    const consumptionData = await getConsumption(userId);
+                    setConsumption(consumptionData);
+                } catch (error) {
+                    setError('Error fetching consumption');
+                }
+            };
+
+            fetchConsumption();
+        }
+    }, [userId]);
 
     useEffect(() => {
         if (selectedFile) {
@@ -41,13 +56,12 @@ const PhotoUpload: React.FC = () => {
         if (selectedFile && userId) {
             try {
                 const response = await uploadPhoto(userId, selectedFile, 'description', 'hashtags');
-                console.log('Response:', response);
                 if ('error' in response) {
                     setError(response.error);
                 } else {
                     setMessage('Photo uploaded successfully');
                     const consumptionData = await getConsumption(userId);
-                    setConsumption(consumptionData.consumption);
+                    setConsumption(consumptionData);
                 }
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -56,7 +70,6 @@ const PhotoUpload: React.FC = () => {
             setError('Missing required data for upload');
         }
     };
-
 
     const handleLogout = () => {
         localStorage.removeItem('jwtToken');
@@ -74,15 +87,17 @@ const PhotoUpload: React.FC = () => {
                     <h2>Current Consumption</h2>
                     <p>Upload Count: {consumption.uploadCount}</p>
                     <p>Storage Used: {consumption.storageUsed} MB</p>
+                    <p>Remaining Uploads: {consumption.uploadLimit - consumption.uploadCount}</p>
+                    <p>Remaining Storage: {consumption.storageLimit - consumption.storageUsed} MB</p>
                 </div>
             )}
             <div>
                 <h2>Upload a Photo</h2>
-                <input type="file" onChange={handleFileChange}/>
+                <input type="file" onChange={handleFileChange} />
                 {preview && (
                     <div>
                         <h3>Image Preview</h3>
-                        <img src={preview} alt="Preview" style={{width: '200px', height: '200px', objectFit: 'cover'}}/>
+                        <img src={preview} alt="Preview" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
                     </div>
                 )}
                 <button onClick={handleUpload}>Upload</button>

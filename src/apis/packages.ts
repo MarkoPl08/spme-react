@@ -1,4 +1,4 @@
-import { Package, UserResponse, ConsumptionResponse, ChangePackageResponse } from '../types/subscriptions.ts';
+import { Package, UserResponse, ChangePackageResponse } from '../types/subscriptions.ts';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -31,10 +31,15 @@ export async function setPackage(userId: number, packageId: number): Promise<Use
 }
 
 // Get user's current consumption
-export async function getConsumption(userId: number): Promise<ConsumptionResponse> {
-    return fetch(`${BASE_URL}/api/subscriptions/consumption/${userId}`)
-        .then(response => response.json());
+export async function getConsumption(userId: number): Promise<{ uploadCount: number, storageUsed: number, uploadLimit: number, storageLimit: number }> {
+    return fetch(`${BASE_URL}/api/subscriptions/consumption/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(response => response.json());
 }
+
 
 // Change user's package
 export async function changePackage(userId: number, newPackageId: number): Promise<ChangePackageResponse> {
