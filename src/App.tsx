@@ -1,26 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/auth/Login';
-import Register from './pages/Register';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import Dashboard from './pages/UserDashboard';
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AuthWrapper from "./hooks/AuthWrapper";
+import EmailLoginComponent from "./pages/auth/EmailLoginComponent.tsx";
+import MainLoginComponent from "./pages/auth/Login";
+import {useState} from "react";
+import {User} from "./types/auth.ts";
 
 function App() {
+    const [user, setUser] = useState<User | null>(null);
+
     return (
         <Router>
-            <AuthWrapper>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/dashboard" element={
-                        <ProtectedRoute>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    } />
-                </Routes>
-            </AuthWrapper>
+            <Routes>
+                <Route path="/register" element={<MainLoginComponent />} />
+                <Route path="/login" element={<EmailLoginComponent setUser={setUser} user={user} />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
+                <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
         </Router>
     );
 }
