@@ -10,6 +10,9 @@ const PhotoUpload: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [consumption, setConsumption] = useState<{ uploadCount: number, storageUsed: number, uploadLimit: number, storageLimit: number } | null>(null);
+    const [resizeWidth, setResizeWidth] = useState<number | null>(null);
+    const [resizeHeight, setResizeHeight] = useState<number | null>(null);
+    const [format, setFormat] = useState<string>('jpeg');
     const navigate = useNavigate();
 
     const token = localStorage.getItem('jwtToken');
@@ -55,7 +58,7 @@ const PhotoUpload: React.FC = () => {
         console.log('User ID:', userId);
         if (selectedFile && userId) {
             try {
-                const response = await uploadPhoto(userId, selectedFile, 'description', 'hashtags');
+                const response = await uploadPhoto(userId, selectedFile, 'description', 'hashtags', resizeWidth, resizeHeight, format);
                 if ('error' in response) {
                     setError(response.error);
                 } else {
@@ -100,6 +103,29 @@ const PhotoUpload: React.FC = () => {
                         <img src={preview} alt="Preview" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
                     </div>
                 )}
+                <div>
+                    <h3>Resize Options</h3>
+                    <input
+                        type="number"
+                        placeholder="Width"
+                        value={resizeWidth ?? ''}
+                        onChange={(e) => setResizeWidth(Number(e.target.value))}
+                    />
+                    <input
+                        type="number"
+                        placeholder="Height"
+                        value={resizeHeight ?? ''}
+                        onChange={(e) => setResizeHeight(Number(e.target.value))}
+                    />
+                </div>
+                <div>
+                    <h3>Format</h3>
+                    <select value={format} onChange={(e) => setFormat(e.target.value)}>
+                        <option value="jpeg">JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WEBP</option>
+                    </select>
+                </div>
                 <button onClick={handleUpload}>Upload</button>
             </div>
         </div>
