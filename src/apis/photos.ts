@@ -1,4 +1,26 @@
+import {Photo} from "../types/photos.ts";
+
 const BASE_URL = 'http://localhost:3000';
+
+export async function fetchPhotos(): Promise<Photo[]> {
+    return fetch(`${BASE_URL}/api/photos/all`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw new Error(err.message) });
+        }
+        return response.json();
+    }).catch(error => {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('An unknown error occurred');
+        }
+    });
+}
 
 export async function uploadPhoto(
     userId: number,

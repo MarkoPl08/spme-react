@@ -6,6 +6,7 @@ import MainLoginComponent from "./pages/auth/Login";
 import {useState} from "react";
 import {User} from "./types/auth.ts";
 import PhotoUpload from "./pages/PhotoUpload.tsx";
+import PhotoGallery from "./pages/PhotoGallery.tsx";
 
 function App() {
     const [user, setUser] = useState<User | null>(null);
@@ -21,6 +22,7 @@ function App() {
                         <PhotoUpload />
                     </ProtectedRoute>
                 } />
+                <Route path="/photo-gallery" element={<ProtectedRoute><PhotoGallery /></ProtectedRoute>} />
                 <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>

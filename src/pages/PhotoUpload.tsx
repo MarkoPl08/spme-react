@@ -78,7 +78,9 @@ const PhotoUpload: React.FC = () => {
         localStorage.removeItem('jwtToken');
         navigate('/login');
     };
-
+    const handleViewGallery = () => {
+        navigate('/photo-gallery');
+    };
     return (
         <div>
             <h1>Photo Upload</h1>
@@ -96,11 +98,11 @@ const PhotoUpload: React.FC = () => {
             )}
             <div>
                 <h2>Upload a Photo</h2>
-                <input type="file" onChange={handleFileChange} />
+                <input type="file" onChange={handleFileChange}/>
                 {preview && (
                     <div>
                         <h3>Image Preview</h3>
-                        <img src={preview} alt="Preview" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
+                        <img src={preview} alt="Preview" style={{width: '200px', height: '200px', objectFit: 'cover'}}/>
                     </div>
                 )}
                 <div>
@@ -127,6 +129,7 @@ const PhotoUpload: React.FC = () => {
                     </select>
                 </div>
                 <button onClick={handleUpload}>Upload</button>
+                <button onClick={handleViewGallery}>View Gallery</button>
             </div>
         </div>
     );
