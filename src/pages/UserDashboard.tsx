@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Consumption, Package} from "../types/subscriptions.ts";
-import {parseJwt} from "../helpers/parseJwt.tsx";
-import {getConsumption, getPackages, setPackage} from "../apis/packages.ts";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getConsumption, getPackages, setPackage } from '../apis/packages';
+import { Package, Consumption } from '../types/subscriptions';
+import { parseJwt } from '../helpers/parseJwt';
 
 const Dashboard: React.FC = () => {
     const [packages, setPackages] = useState<Package[]>([]);
@@ -51,11 +51,7 @@ const Dashboard: React.FC = () => {
                     alert('Package updated successfully');
                 }
             } catch (error) {
-                if (error instanceof Error) {
-                    setError(error.message);
-                } else {
-                    setError('An unknown error occurred');
-                }
+                setError(error instanceof Error ? error.message : 'An unknown error occurred');
             }
         } else {
             setError('User ID not found');
@@ -90,6 +86,10 @@ const Dashboard: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+            </div>
+            <div>
+                <h2>Upload a Photo</h2>
+                <button onClick={() => navigate('/upload')}>Go to Upload Page</button>
             </div>
         </div>
     );
