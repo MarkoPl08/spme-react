@@ -12,6 +12,7 @@ const PhotoGallery: React.FC = () => {
         const loadPhotos = async () => {
             try {
                 const data = await fetchPhotos();
+                console.log('Fetched photos:', data);
                 setPhotos(data);
             } catch (error) {
                 setError('Error fetching photos');
@@ -22,7 +23,7 @@ const PhotoGallery: React.FC = () => {
     }, []);
 
     const handleBackToUpload = () => {
-        navigate('/photo-upload');
+        navigate('/upload');
     };
 
     return (
@@ -34,9 +35,10 @@ const PhotoGallery: React.FC = () => {
                 {photos.map(photo => (
                     <div key={photo.PhotoID} style={{ margin: '10px' }}>
                         <img
-                            src={`/${photo.PhotoPath}`}
+                            src={`http://localhost:3000/${photo.PhotoPath}`}
                             alt={photo.Description || 'No description available'}
                             style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                            onError={(e) => console.error('Image load error:', e.currentTarget.src)}
                         />
                         <p>{photo.Description || 'No description'}</p>
                         <p>By: {photo.User.Username}</p>

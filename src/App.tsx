@@ -17,14 +17,10 @@ function App() {
                 <Route path="/register" element={<MainLoginComponent />} />
                 <Route path="/login" element={<EmailLoginComponent setUser={setUser} user={user} />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/upload" element={
-                    <ProtectedRoute>
-                        <PhotoUpload />
-                    </ProtectedRoute>
-                } />
+                <Route path="/upload" element={<ProtectedRoute><PhotoUpload /></ProtectedRoute>} />
                 <Route path="/photo-gallery" element={<ProtectedRoute><PhotoGallery /></ProtectedRoute>} />
-                <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
-                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="/" element={<Navigate to={user ? '/dashboard' : '/register'} />} />
+                <Route path="*" element={<Navigate to="/register" />} />
             </Routes>
         </Router>
     );
