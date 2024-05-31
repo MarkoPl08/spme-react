@@ -34,6 +34,6 @@ export async function verifyToken(token: string): Promise<VerifyTokenResponse> {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token })
+        body: JSON.stringify({token})
     }).then(response => response.json());
 }

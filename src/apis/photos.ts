@@ -10,7 +10,9 @@ export async function fetchPhotos(): Promise<Photo[]> {
         }
     }).then(response => {
         if (!response.ok) {
-            return response.json().then(err => { throw new Error(err.message) });
+            return response.json().then(err => {
+                throw new Error(err.message)
+            });
         }
         return response.json();
     }).catch(error => {
@@ -45,14 +47,63 @@ export async function uploadPhoto(
         body: formData
     }).then(response => {
         if (!response.ok) {
+            return response.json().then(err => {
+                throw new Error(err.message)
+            });
+        }
+        return response.json();
+    }).catch(error => {
+        if (error instanceof Error) {
+            return {error: error.message};
+        } else {
+            return {error: 'An unknown error occurred'};
+        }
+    });
+}
+
+export async function updatePhoto(photoId: number, description: string, hashtags: string): Promise<Photo> {
+    return fetch(`${BASE_URL}/api/photos/update/${photoId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description, hashtags })
+    }).then(response => {
+        if (!response.ok) {
             return response.json().then(err => { throw new Error(err.message) });
         }
         return response.json();
     }).catch(error => {
         if (error instanceof Error) {
-            return { error: error.message };
+            throw error;
         } else {
-            return { error: 'An unknown error occurred' };
+            throw new Error('An unknown error occurred');
         }
     });
+}
+
+export async function searchPhotos(criteria: {
+    description?: string;
+    hashtags?: string;
+    startDate?: string;
+    endDate?: string;
+    username?: string;
+}): Promise<Photo[]> {
+    const queryParams = new URLSearchParams(criteria as Record<string, string>);
+    return fetch(`${BASE_URL}/api/photos/search?${queryParams.toString()}`)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.message)
+                });
+            }
+            return response.json();
+        })
+        .catch(error => {
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                throw new Error('An unknown error occurred');
+            }
+        });
 }
