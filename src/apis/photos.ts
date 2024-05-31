@@ -82,7 +82,6 @@ export async function updatePhoto(photoId: number, description: string, hashtags
     });
 }
 
-// In apis/photos.ts
 export async function searchPhotos(searchParams: { description: string; hashtags: string; startDate: string; endDate: string; username: string; }): Promise<Photo[]> {
     return fetch(`${BASE_URL}/api/photos/search`, {
         method: 'POST',
@@ -93,3 +92,10 @@ export async function searchPhotos(searchParams: { description: string; hashtags
     }).then(response => response.json());
 }
 
+export async function downloadOriginalPhoto(photoId: number) {
+    window.open(`${BASE_URL}/api/photos/download/original/${photoId}`, '_blank');
+}
+
+export async function downloadProcessedPhoto(photoId: number) {
+    window.open(`${BASE_URL}/api/photos/download/processed/${photoId}`, '_blank');
+}

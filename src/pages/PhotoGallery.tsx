@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPhotos, updatePhoto, searchPhotos } from '../apis/photos';
+import { fetchPhotos, updatePhoto, downloadOriginalPhoto, downloadProcessedPhoto } from '../apis/photos';
 import { Photo } from '../types/photos';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,33 +8,21 @@ const PhotoGallery: React.FC = () => {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [description, setDescription] = useState<string>('');
     const [hashtags, setHashtags] = useState<string>('');
-    const [startDate, setStartDate] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>('');
-    const [username, setUsername] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const loadPhotos = async () => {
-        try {
-            const data = await fetchPhotos();
-            setPhotos(data);
-        } catch (error) {
-            setError('Error fetching photos');
-        }
-    };
-
     useEffect(() => {
+        const loadPhotos = async () => {
+            try {
+                const data = await fetchPhotos();
+                setPhotos(data);
+            } catch (error) {
+                setError('Error fetching photos');
+            }
+        };
+
         loadPhotos();
     }, []);
-
-    const handleSearch = async () => {
-        try {
-            const data = await searchPhotos({ description, hashtags, startDate, endDate, username });
-            setPhotos(data);
-        } catch (error) {
-            setError('Error searching photos');
-        }
-    };
 
     const handleUpdatePhoto = async (photoId: number) => {
         try {
@@ -53,49 +41,16 @@ const PhotoGallery: React.FC = () => {
             <h1>Photo Gallery</h1>
             {error && <p>{error}</p>}
             <button onClick={() => navigate('/upload')}>Back to Upload</button>
-
-            <div>
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Description"
-                />
-                <input
-                    type="text"
-                    value={hashtags}
-                    onChange={(e) => setHashtags(e.target.value)}
-                    placeholder="Hashtags"
-                />
-                <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    placeholder="Start Date"
-                />
-                <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    placeholder="End Date"
-                />
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Username"
-                />
-                <button onClick={handleSearch}>Search</button>
-            </div>
-
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {photos.map(photo => (
-                    <div key={photo.PhotoID} style={{ margin: '10px' }}>
+                    <div key={photo.PhotoID} style={{margin: '10px'}}>
                         <img
                             src={`http://localhost:3000/${photo.PhotoPath}`}
                             alt={photo.Description || 'No description available'}
-                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                            onError={(e) => { e.currentTarget.src = '/placeholder.jpg'; }}
+                            style={{width: '200px', height: '200px', objectFit: 'cover'}}
+                            onError={(e) => {
+                                e.currentTarget.src = '/placeholder.jpg';
+                            }}
                         />
                         <p>{photo.Description || 'No description'}</p>
                         <p>By: {photo.User?.Username || 'Unknown'}</p>
@@ -105,7 +60,10 @@ const PhotoGallery: React.FC = () => {
                             setSelectedPhoto(photo);
                             setDescription(photo.Description || '');
                             setHashtags(photo.Hashtags || '');
-                        }}>Edit</button>
+                        }}>Edit
+                        </button>
+                        <button onClick={() => downloadOriginalPhoto(photo.PhotoID)}>Download Original</button>
+                        <button onClick={() => downloadProcessedPhoto(photo.PhotoID)}>Download Processed</button>
                     </div>
                 ))}
             </div>
