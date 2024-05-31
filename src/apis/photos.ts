@@ -82,28 +82,14 @@ export async function updatePhoto(photoId: number, description: string, hashtags
     });
 }
 
-export async function searchPhotos(criteria: {
-    description?: string;
-    hashtags?: string;
-    startDate?: string;
-    endDate?: string;
-    username?: string;
-}): Promise<Photo[]> {
-    const queryParams = new URLSearchParams(criteria as Record<string, string>);
-    return fetch(`${BASE_URL}/api/photos/search?${queryParams.toString()}`)
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => {
-                    throw new Error(err.message)
-                });
-            }
-            return response.json();
-        })
-        .catch(error => {
-            if (error instanceof Error) {
-                throw error;
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        });
+// In apis/photos.ts
+export async function searchPhotos(searchParams: { description: string; hashtags: string; startDate: string; endDate: string; username: string; }): Promise<Photo[]> {
+    return fetch(`${BASE_URL}/api/photos/search`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(searchParams),
+    }).then(response => response.json());
 }
+
