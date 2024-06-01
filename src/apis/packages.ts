@@ -2,13 +2,11 @@ import { Package, UserResponse, ChangePackageResponse } from '../types/subscript
 
 const BASE_URL = 'http://localhost:3000';
 
-// Fetch available subscription packages
 export async function getPackages(): Promise<Package[]> {
     return fetch(`${BASE_URL}/api/subscriptions/packages`)
         .then(response => response.json());
 }
 
-// Set user's subscription package
 export async function setPackage(userId: number, packageId: number): Promise<UserResponse | { error: string }> {
     return fetch(`${BASE_URL}/api/subscriptions/setPackage`, {
         method: 'POST',
@@ -30,7 +28,6 @@ export async function setPackage(userId: number, packageId: number): Promise<Use
     });
 }
 
-// Get user's current consumption
 export async function getConsumption(userId: number): Promise<{ uploadCount: number, storageUsed: number, uploadLimit: number, storageLimit: number }> {
     return fetch(`${BASE_URL}/api/subscriptions/consumption/${userId}`, {
         method: 'GET',
@@ -41,7 +38,6 @@ export async function getConsumption(userId: number): Promise<{ uploadCount: num
 }
 
 
-// Change user's package
 export async function changePackage(userId: number, newPackageId: number): Promise<ChangePackageResponse> {
     return fetch(`${BASE_URL}/api/subscriptions/changePackage`, {
         method: 'POST',

@@ -4,13 +4,13 @@ import { parseJwt } from "../helpers/parseJwt";
 
 interface ProtectedRouteProps {
     children: React.ReactElement;
-    requiredRole?: number; // Assuming role is a number
+    requiredRole?: number;
 }
 
 interface DecodedToken {
     userId: number;
     email: string;
-    role: number; // Ensure this matches the type
+    role: number;
     exp: number;
 }
 
