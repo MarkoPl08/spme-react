@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {fetchUsers, updateUser} from '../apis/admin';
 import {User} from '../types/user';
+import AdminPhotoManagement from "./AdminPhotoManagement.tsx";
 
 const AdminDashboard: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -90,6 +91,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                 ))}
             </div>
+            <AdminPhotoManagement/>
         </div>
     );
 };

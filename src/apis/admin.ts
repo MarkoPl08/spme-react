@@ -34,3 +34,22 @@ export async function updateUser(userId: number, username: string, email: string
     }
     return response.json();
 }
+
+export async function fetchPhotos() {
+    const response = await fetch(`${BASE_URL}/api/photos/all`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+        }
+    });
+    return response.json();
+}
+
+export async function deletePhoto(photoId: number) {
+    const response = await fetch(`${BASE_URL}/api/admin/photos/${photoId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+        }
+    });
+    return response.json();
+}
