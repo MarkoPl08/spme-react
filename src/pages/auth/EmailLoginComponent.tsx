@@ -5,8 +5,8 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import {loginUser} from '../../apis/authApi';
 import {User} from '../../types/auth';
 import {parseJwt} from '../../helpers/parseJwt';
-import CustomTextField from '../../components/CustomTextField.tsx';
-import CustomButton from '../../components/CustomButton.tsx';
+import CustomTextField from '../../components/CustomTextField';
+import CustomButton from '../../components/CustomButton';
 
 interface EmailLoginComponentProps {
     setUser: (user: User | null) => void;
@@ -34,7 +34,15 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({setUser, user}
                 UserID: decodedUser.userId,
                 name: decodedUser.Username,
                 Email: email,
+                RoleID: decodedUser.role
             });
+
+            // Redirect based on role
+            if (decodedUser.role === 1) {
+                navigate('/admin');
+            } else {
+                navigate('/dashboard');
+            }
         } else {
             console.error('Login failed:', response.message || 'Unknown error');
         }
@@ -57,9 +65,16 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({setUser, user}
                 setUser({
                     UserID: decodedUser.userId,
                     name: decodedUser.Username,
-                    Email: decodedUser.Email
+                    Email: decodedUser.Email,
+                    RoleID: decodedUser.role
                 });
-                navigate('/dashboard');
+
+                // Redirect based on role
+                if (decodedUser.role === 1) {
+                    navigate('/admin');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 console.error('GitHub login failed:', data.message);
             }

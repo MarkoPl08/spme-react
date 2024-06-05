@@ -74,13 +74,20 @@ const Dashboard: React.FC = () => {
                     </CardContent>
                 </Card>
             )}
-            <Card sx={{marginBottom: 3}}>
+            <Card sx={{
+                marginBottom: 3
+            }}>
                 <CardContent>
                     <Typography variant="h5">Select a Package</Typography>
                     <Grid container spacing={2}>
                         {packages.map((pkg) => (
-                            <Grid item xs={12} md={6} key={pkg.PackageID}>
-                                <Card>
+                            <Grid item xs={12} md={4} key={pkg.PackageID}>
+                                <Card sx={{
+                                    display: "flex",
+                                    justifyItems: "center",
+                                    alignItems: "center",
+                                    flexDirection: "column"
+                                }}>
                                     <CardContent>
                                         <Typography variant="h6">{pkg.PackageName}</Typography>
                                         <Typography>${pkg.Price}</Typography>
@@ -97,7 +104,12 @@ const Dashboard: React.FC = () => {
                     </Grid>
                 </CardContent>
             </Card>
-            <Card>
+            <Card sx={{
+                display: "flex",
+                justifyItems: "center",
+                alignItems: "center",
+                flexDirection: "column"
+            }}>
                 <CardContent>
                     <Typography variant="h5">Upload a Photo</Typography>
                 </CardContent>

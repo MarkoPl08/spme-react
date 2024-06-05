@@ -52,7 +52,7 @@ const AdminPhotoManagement: React.FC = () => {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={`http://localhost:3001/${photo.PhotoPath}`}
+                                image={`http://localhost:3001/uploads/${photo.PhotoPath}`}
                                 alt={photo.Description || 'No description available'}
                                 onError={(e) => {
                                     e.currentTarget.src = '/placeholder.jpg';

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {fetchPhotos, updatePhoto, downloadOriginalPhoto, downloadProcessedPhoto} from '../apis/photos';
+import {fetchPhotos, updatePhoto, downloadOriginalPhoto, downloadProcessedPhoto, searchPhotos} from '../apis/photos';
 import {Photo} from '../types/photos';
 import {useNavigate} from 'react-router-dom';
 import {
@@ -17,8 +17,11 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Alert
+    Alert,
+    Paper
 } from '@mui/material';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider, DesktopDatePicker} from '@mui/x-date-pickers';
 
 const PhotoGallery: React.FC = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
@@ -26,25 +29,30 @@ const PhotoGallery: React.FC = () => {
     const [description, setDescription] = useState<string>('');
     const [hashtags, setHashtags] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [searchDescription, setSearchDescription] = useState<string>('');
+    const [searchHashtags, setSearchHashtags] = useState<string>('');
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [username, setUsername] = useState<string>('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadPhotos = async () => {
-            try {
-                const data = await fetchPhotos();
-                setPhotos(data);
-            } catch (error) {
-                setError('Error fetching photos');
-            }
-        };
+    const loadPhotos = async () => {
+        try {
+            const data = await fetchPhotos();
+            setPhotos(data);
+        } catch (error) {
+            setError('Error fetching photos');
+        }
+    };
 
+    useEffect(() => {
         loadPhotos();
     }, []);
 
     const handleUpdatePhoto = async (photoId: number) => {
         try {
-            const updatedPhoto = await updatePhoto(photoId, description, hashtags);
-            setPhotos(photos.map(photo => photo.PhotoID === photoId ? {...photo, ...updatedPhoto} : photo));
+            await updatePhoto(photoId, description, hashtags);
+            await loadPhotos(); // Refresh the photos state after update
             setSelectedPhoto(null);
             setDescription('');
             setHashtags('');
@@ -65,19 +73,79 @@ const PhotoGallery: React.FC = () => {
         setHashtags('');
     };
 
+    const handleSearch = async () => {
+        try {
+            setError(null); // Clear any previous errors
+            const searchParams = {
+                description: searchDescription,
+                hashtags: searchHashtags,
+                startDate: startDate ? startDate.toISOString() : '',
+                endDate: endDate ? endDate.toISOString() : '',
+                username
+            };
+            const data = await searchPhotos(searchParams);
+            console.log('Search results:', data); // Debugging: Log the search results
+            setPhotos(data);
+        } catch (error) {
+            setError('Error searching photos');
+        }
+    };
+
     return (
-        <Box sx={{padding: 3}}>
+        <Box sx={{padding: 3, marginTop: "5rem"}}>
             <Typography variant="h4" gutterBottom>
                 Photo Gallery
             </Typography>
-            {error && <Alert severity="error">{error}</Alert>}
             <Button variant="contained" color="primary" onClick={() => navigate('/upload')} sx={{marginBottom: 3}}>
                 Back to Upload
             </Button>
+            {error && <Alert severity="error">{error}</Alert>}
+            <Paper sx={{padding: 3, marginBottom: 3, width: "70rem"}}>
+                <Typography variant="h6" gutterBottom>
+                    Search Photos
+                </Typography>
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
+                    <TextField
+                        label="Description"
+                        value={searchDescription}
+                        onChange={(e) => setSearchDescription(e.target.value)}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Hashtags"
+                        value={searchHashtags}
+                        onChange={(e) => setSearchHashtags(e.target.value)}
+                        fullWidth
+                    />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DesktopDatePicker
+                            label="Start Date"
+                            value={startDate}
+                            onChange={(date: Date | null) => setStartDate(date)}
+                            renderInput={(params) => <TextField {...params} fullWidth/>}
+                        />
+                        <DesktopDatePicker
+                            label="End Date"
+                            value={endDate}
+                            onChange={(date: Date | null) => setEndDate(date)}
+                            renderInput={(params) => <TextField {...params} fullWidth/>}
+                        />
+                    </LocalizationProvider>
+                    <TextField
+                        label="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        fullWidth
+                    />
+                    <Button variant="contained" color="primary" onClick={handleSearch}>
+                        Search
+                    </Button>
+                </Box>
+            </Paper>
             <Grid container spacing={3}>
                 {photos.map(photo => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={photo.PhotoID}>
-                        <Card sx={{maxWidth: 345}}>
+                    <Grid item xs={12} sm={6} md={4} key={photo.PhotoID}>
+                        <Card sx={{minWidth: "20rem"}}>
                             <CardMedia
                                 component="img"
                                 height="200"

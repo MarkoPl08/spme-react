@@ -12,10 +12,9 @@ const CenteredLayout: React.FC<CenteredLayoutProps> = ({ children }) => {
             <Box
                 display="flex"
                 flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
                 minHeight="100vh"
-                minWidth="100vw"
+                alignItems="center"
+                width="100vw"
                 textAlign="center"
                 padding={2}
             >
