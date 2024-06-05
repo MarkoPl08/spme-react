@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getConsumption, getPackages, setPackage } from '../apis/packages';
-import { Package, Consumption } from '../types/subscriptions';
-import { parseJwt } from '../helpers/parseJwt';
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {getConsumption, getPackages, setPackage} from '../apis/packages';
+import {Package, Consumption} from '../types/subscriptions';
+import {Box, Button, Typography, Card, CardContent, CardActions, Alert, Grid} from '@mui/material';
+import {parseJwt} from '../helpers/parseJwt';
 
 const Dashboard: React.FC = () => {
     const [packages, setPackages] = useState<Package[]>([]);
@@ -58,40 +59,55 @@ const Dashboard: React.FC = () => {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('jwtToken');
-        navigate('/login');
-    };
-
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <button onClick={handleLogout}>Logout</button>
-            {error && <p>{error}</p>}
+        <Box sx={{padding: 3}}>
+            <Typography variant="h4" gutterBottom>
+                Dashboard
+            </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
             {consumption && (
-                <div>
-                    <h2>Current Consumption</h2>
-                    <p>Upload Count: {consumption.uploadCount}</p>
-                    <p>Storage Used: {consumption.storageUsed} MB</p>
-                </div>
+                <Card sx={{marginBottom: 3}}>
+                    <CardContent>
+                        <Typography variant="h5">Current Consumption</Typography>
+                        <Typography>Upload Count: {consumption.uploadCount}</Typography>
+                        <Typography>Storage Used: {consumption.storageUsed} MB</Typography>
+                    </CardContent>
+                </Card>
             )}
-            <div>
-                <h2>Select a Package</h2>
-                <ul>
-                    {packages.map(pkg => (
-                        <li key={pkg.PackageID}>
-                            <button onClick={() => handlePackageSelect(pkg.PackageID)}>
-                                {pkg.PackageName} - ${pkg.Price}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <h2>Upload a Photo</h2>
-                <button onClick={() => navigate('/upload')}>Go to Upload Page</button>
-            </div>
-        </div>
+            <Card sx={{marginBottom: 3}}>
+                <CardContent>
+                    <Typography variant="h5">Select a Package</Typography>
+                    <Grid container spacing={2}>
+                        {packages.map((pkg) => (
+                            <Grid item xs={12} md={6} key={pkg.PackageID}>
+                                <Card>
+                                    <CardContent>
+                                        <Typography variant="h6">{pkg.PackageName}</Typography>
+                                        <Typography>${pkg.Price}</Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button variant="contained" color="primary"
+                                                onClick={() => handlePackageSelect(pkg.PackageID)}>
+                                            Select
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardContent>
+                    <Typography variant="h5">Upload a Photo</Typography>
+                </CardContent>
+                <CardActions>
+                    <Button variant="contained" color="primary" onClick={() => navigate('/upload')}>
+                        Go to Upload Page
+                    </Button>
+                </CardActions>
+            </Card>
+        </Box>
     );
 };
 
