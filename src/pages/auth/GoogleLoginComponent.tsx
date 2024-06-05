@@ -12,7 +12,7 @@ const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ setUser, us
     const navigate = useNavigate();
 
     const handleSuccess = (response: CredentialResponse) => {
-        fetch('http://localhost:3000/api/auth/google', {
+        fetch('http://localhost:3001/api/auth/google', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,6 +1,6 @@
 import {Photo} from "../types/photos.ts";
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:3001';
 
 export async function fetchPhotos(): Promise<Photo[]> {
     return fetch(`${BASE_URL}/api/photos/all`, {
