@@ -1,6 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { deletePhoto, fetchPhotos } from '../apis/admin';
-import { Photo } from '../types/photos';
+import React, {useState, useEffect} from 'react';
+import {deletePhoto, fetchPhotos} from '../apis/admin';
+import {Photo} from '../types/photos';
+import {
+    Box,
+    Button,
+    Typography,
+    Card,
+    CardMedia,
+    CardContent,
+    CardActions,
+    Grid,
+    Alert
+} from '@mui/material';
 
 const AdminPhotoManagement: React.FC = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
@@ -29,29 +40,48 @@ const AdminPhotoManagement: React.FC = () => {
     };
 
     return (
-        <div>
-            <h2>Manage Photos</h2>
-            {error && <p>{error}</p>}
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Box sx={{padding: 3}}>
+            <Typography variant="h4" gutterBottom>
+                Manage Photos
+            </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
+            <Grid container spacing={3}>
                 {photos.map(photo => (
-                    <div key={photo.PhotoID} style={{ margin: '10px' }}>
-                        <img
-                            src={`http://localhost:3001/${photo.PhotoPath}`}
-                            alt={photo.Description || 'No description available'}
-                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                            onError={(e) => {
-                                e.currentTarget.src = '/placeholder.jpg';
-                            }}
-                        />
-                        <p>{photo.Description || 'No description'}</p>
-                        <p>By: {photo.User?.Username || 'Unknown'}</p>
-                        <p>Uploaded: {new Date(photo.UploadDateTime).toLocaleString()}</p>
-                        <p>Hashtags: {photo.Hashtags || 'No hashtags'}</p>
-                        <button onClick={() => handleDeletePhoto(photo.PhotoID)}>Delete</button>
-                    </div>
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={photo.PhotoID}>
+                        <Card sx={{maxWidth: 345}}>
+                            <CardMedia
+                                component="img"
+                                height="200"
+                                image={`http://localhost:3001/uploads/${photo.PhotoPath}`}
+                                alt={photo.Description || 'No description available'}
+                                onError={(e) => {
+                                    e.currentTarget.src = '/placeholder.jpg';
+                                }}
+                            />
+                            <CardContent>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {photo.Description || 'No description'}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    By: {photo.User?.Username || 'Unknown'}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    Uploaded: {new Date(photo.UploadDateTime).toLocaleString()}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    Hashtags: {photo.Hashtags || 'No hashtags'}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" color="secondary" onClick={() => handleDeletePhoto(photo.PhotoID)}>
+                                    Delete
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
                 ))}
-            </div>
-        </div>
+            </Grid>
+        </Box>
     );
 };
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { registerUser } from '../../apis/authApi.ts';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { registerUser } from '../../apis/authApi';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import CustomTextField from '../../components/CustomTextField.tsx';
+import CustomButton from '../../components/CustomButton.tsx';
 
 const EmailRegisterComponent: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -25,7 +25,7 @@ const EmailRegisterComponent: React.FC = () => {
 
     return (
         <Box component="form" noValidate autoComplete="off">
-            <TextField
+            <CustomTextField
                 label="Username"
                 variant="outlined"
                 value={username}
@@ -33,7 +33,7 @@ const EmailRegisterComponent: React.FC = () => {
                 fullWidth
                 margin="normal"
             />
-            <TextField
+            <CustomTextField
                 label="Email"
                 variant="outlined"
                 value={email}
@@ -41,7 +41,7 @@ const EmailRegisterComponent: React.FC = () => {
                 fullWidth
                 margin="normal"
             />
-            <TextField
+            <CustomTextField
                 label="Password"
                 type="password"
                 variant="outlined"
@@ -50,9 +50,9 @@ const EmailRegisterComponent: React.FC = () => {
                 fullWidth
                 margin="normal"
             />
-            <Button onClick={handleRegister} variant="contained" color="primary">
+            <CustomButton onClick={handleRegister} variant="contained">
                 Register
-            </Button>
+            </CustomButton>
         </Box>
     );
 };

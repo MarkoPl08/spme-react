@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { User } from '../../types/auth.ts';
-import Button from "@mui/material/Button";
+import { User } from '../../types/auth';
+import CustomButton from '../../components/CustomButton.tsx';
 
 interface GitHubLoginComponentProps {
     setUser: (user: User | null) => void;
@@ -18,7 +18,7 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
         const scope = 'user';
         const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
 
-        console.log("Redirecting to GitHub:", githubAuthUrl);
+        console.log('Redirecting to GitHub:', githubAuthUrl);
         window.location.href = githubAuthUrl;
     };
 
@@ -27,9 +27,9 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
             const response = await fetch('http://localhost:3001/api/auth/github', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ code })
+                body: JSON.stringify({ code }),
             });
 
             const data = await response.json();
@@ -39,7 +39,7 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
                 setUser({
                     UserID: data.user.UserID,
                     name: data.user.Username,
-                    Email: data.user.Email
+                    Email: data.user.Email,
                 });
                 navigate('/dashboard');
             } else {
@@ -53,7 +53,7 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
     useEffect(() => {
         const code = new URLSearchParams(location.search).get('code');
         if (code) {
-            console.log("Received GitHub code:", code);
+            console.log('Received GitHub code:', code);
             handleGitHubLogin(code);
         }
     }, [location, handleGitHubLogin]);
@@ -61,9 +61,9 @@ const GitHubLoginComponent: React.FC<GitHubLoginComponentProps> = ({ setUser, us
     return (
         <>
             {!user && (
-                <Button onClick={initiateGitHubLogin} variant="contained" color="primary">
+                <CustomButton onClick={initiateGitHubLogin} variant="contained">
                     Login with GitHub
-                </Button>
+                </CustomButton>
             )}
         </>
     );
