@@ -29,15 +29,15 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{padding: 3, marginTop: "5rem"}}>
+        <Box sx={{padding: 3, marginTop: "5rem", width: "100rem"}}>
             <Typography variant="h4" gutterBottom>
-                Welcome to the Home Page
+                Home Page Of This Amazing Insta Clone
             </Typography>
             {error && <Alert severity="error">{error}</Alert>}
             <Grid container spacing={3}>
                 {photos.map(photo => (
                     <Grid item xs={12} sm={6} md={4} key={photo.PhotoID}>
-                        <Card sx={{minWidth: "20rem"}}>
+                        <Card>
                             <CardMedia
                                 component="img"
                                 height="200"
