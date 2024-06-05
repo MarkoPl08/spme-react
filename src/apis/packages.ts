@@ -1,6 +1,6 @@
 import { Package, UserResponse, ChangePackageResponse } from '../types/subscriptions.ts';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:3001';
 
 export async function getPackages(): Promise<Package[]> {
     return fetch(`${BASE_URL}/api/subscriptions/packages`)

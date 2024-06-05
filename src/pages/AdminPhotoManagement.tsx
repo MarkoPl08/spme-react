@@ -36,7 +36,7 @@ const AdminPhotoManagement: React.FC = () => {
                 {photos.map(photo => (
                     <div key={photo.PhotoID} style={{ margin: '10px' }}>
                         <img
-                            src={`http://localhost:3000/${photo.PhotoPath}`}
+                            src={`http://localhost:3001/${photo.PhotoPath}`}
                             alt={photo.Description || 'No description available'}
                             style={{ width: '200px', height: '200px', objectFit: 'cover' }}
                             onError={(e) => {

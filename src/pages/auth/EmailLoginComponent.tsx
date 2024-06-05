@@ -41,7 +41,7 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({ setUser, user
 
     const handleGitHubLogin = useCallback(async (code: string) => {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/github', {
+            const response = await fetch('http://localhost:3001/api/auth/github', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

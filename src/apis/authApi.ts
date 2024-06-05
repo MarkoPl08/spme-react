@@ -1,6 +1,6 @@
 import {LoginCredentials, RegisterData, UserResponse, VerifyTokenResponse} from "../types/auth.ts";
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:3001';
 
 export async function loginUser(credentials: LoginCredentials): Promise<UserResponse> {
     return fetch(`${BASE_URL}/login`, {
