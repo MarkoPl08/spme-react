@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
             const fetchConsumption = async () => {
                 try {
                     const consumptionData = await getConsumption(userId);
-                    setConsumption(consumptionData.consumption);
+                    setConsumption(consumptionData);
                 } catch (error) {
                     setError('Error fetching consumption');
                 }
