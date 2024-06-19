@@ -1,5 +1,3 @@
-// src/components/CustomButton.tsx
-
 import React from 'react';
 import { Button, ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';

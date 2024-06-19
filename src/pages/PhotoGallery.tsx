@@ -52,7 +52,7 @@ const PhotoGallery: React.FC = () => {
     const handleUpdatePhoto = async (photoId: number) => {
         try {
             await updatePhoto(photoId, description, hashtags);
-            await loadPhotos(); // Refresh the photos state after update
+            await loadPhotos();
             setSelectedPhoto(null);
             setDescription('');
             setHashtags('');
@@ -75,7 +75,7 @@ const PhotoGallery: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            setError(null); // Clear any previous errors
+            setError(null);
             const searchParams = {
                 description: searchDescription,
                 hashtags: searchHashtags,
@@ -84,7 +84,7 @@ const PhotoGallery: React.FC = () => {
                 username
             };
             const data = await searchPhotos(searchParams);
-            console.log('Search results:', data); // Debugging: Log the search results
+            console.log('Search results:', data);
             setPhotos(data);
         } catch (error) {
             setError('Error searching photos');

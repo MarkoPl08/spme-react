@@ -1,5 +1,3 @@
-// src/components/MainLoginComponent.tsx
-
 import React, {useState} from 'react';
 import GoogleLoginComponent from './GoogleLoginComponent';
 import GitHubLoginComponent from './GitHubLoginComponent';

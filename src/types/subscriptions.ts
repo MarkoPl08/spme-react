@@ -9,7 +9,7 @@ export interface Package {
 
 export interface Consumption {
     uploadCount: number;
-    storageUsed: number; // in MB
+    storageUsed: number;
 }
 
 export interface UserResponse {

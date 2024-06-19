@@ -37,7 +37,6 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({setUser, user}
                 RoleID: decodedUser.role
             });
 
-            // Redirect based on role
             if (decodedUser.role === 1) {
                 navigate('/admin');
             } else {
@@ -69,7 +68,6 @@ const EmailLoginComponent: React.FC<EmailLoginComponentProps> = ({setUser, user}
                     RoleID: decodedUser.role
                 });
 
-                // Redirect based on role
                 if (decodedUser.role === 1) {
                     navigate('/admin');
                 } else {
